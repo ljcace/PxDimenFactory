@@ -12,4 +12,4 @@ clone项目，然后运行PxDimenBuilder下的Main.java即可。
 
 just clone and run the Main.java in PxDimenBuilder.
 
-![示例图片](https://github.com/ljcace/PxDimenFactory/blob/master/eg.png)
+![示例图片](https://github.com/ljcace/PxDimenFactory/blob/master/frame.png)

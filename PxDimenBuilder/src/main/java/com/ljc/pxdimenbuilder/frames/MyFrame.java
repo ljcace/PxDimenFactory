@@ -31,7 +31,7 @@ public class MyFrame extends JFrame implements ActionListener {
     JPanel contentPane, pane1, pane2, pane3, list_content;
     JScrollPane list;
     JViewport list_viewport;
-    JLabel label1, label2, label3;
+    JLabel label1, label11, label2, label22, label222, label3, label33;
     JTextField textField1, textField2, textField3, textField4;
     JButton b1, b2, b3;
 
@@ -57,8 +57,12 @@ public class MyFrame extends JFrame implements ActionListener {
         list_viewport = new JViewport();
         list_content = new JPanel();
         label1 = new JLabel("请输入所需像素上限(0-9999)：");
+        label11 = new JLabel("Please enter the upper limit of the pixel(0-9999)");
         label3 = new JLabel("请输入精确位数(<=1:小数点后1位;>=2:小数点后2位)默认1位小数");
+        label33 = new JLabel("Please enter the exact number of figures(<=1:1;>=2:2)default 1");
         label2 = new JLabel("请在左侧输入高度(如1920)，右侧输入宽度(如1080)(以1080x1920为基准)");
+        label22 = new JLabel("Please input the height on the left side(like 1920),Please input the width on the right side(like 1080)");
+        label222 = new JLabel("(base on 1080x1920)");
 
 
         textField1 = new JTextField();
@@ -73,7 +77,7 @@ public class MyFrame extends JFrame implements ActionListener {
         textField4 = new JTextField();
         textField4.setColumns(1);
         textField4.setDocument(new NumberLenghtLimitedDmt(1));
-        b3 = new JButton("新增");
+        b3 = new JButton("add");
         b3.addActionListener(this);
         JPanel pane22 = new JPanel();
         pane22.add(textField2);
@@ -81,10 +85,14 @@ public class MyFrame extends JFrame implements ActionListener {
         pane22.add(b3);
         pane22.setLayout(new BoxLayout(pane22, BoxLayout.X_AXIS));
         pane1.add(label1);
+        pane1.add(label11);
         pane1.add(textField1);
         pane1.add(label3);
+        pane1.add(label33);
         pane1.add(textField4);
         pane1.add(label2);
+        pane1.add(label22);
+        pane1.add(label222);
         pane1.setLayout(new BoxLayout(pane1, BoxLayout.Y_AXIS));
         pane1.add(pane22);
 
@@ -100,9 +108,9 @@ public class MyFrame extends JFrame implements ActionListener {
         pane3 = new JPanel();
         JPanel pane4 = new JPanel();
 
-        b1 = new JButton("取消");
+        b1 = new JButton("cancle");
         b1.addActionListener(this);
-        b2 = new JButton("确定");
+        b2 = new JButton("ok");
         b2.addActionListener(this);
         pane4.add(b1);
         pane4.add(b2);
@@ -130,7 +138,7 @@ public class MyFrame extends JFrame implements ActionListener {
         item.add(and);
         item.add(w);
         if (isDelete) {
-            JButton delete = new JButton("删除");
+            JButton delete = new JButton("delete");
             delete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -152,7 +160,7 @@ public class MyFrame extends JFrame implements ActionListener {
             list_content.add(item);
             this.setVisible(true);
         } else {
-            showDialog("已存在该像素值");
+            showDialog("已存在该像素值/it is exist");
         }
     }
 
@@ -168,21 +176,21 @@ public class MyFrame extends JFrame implements ActionListener {
         } else if (e.getSource() == b2) {
             String max = textField1.getText().toString();
             if (max.isEmpty()) {
-                showDialog("请输入所需像素上限");
+                showDialog("请输入所需像素上限/please input the upper limit");
                 return;
             }
             if (valueList.isEmpty()) {
-                showDialog("请新增像素值组");
+                showDialog("请新增像素值组/please add a height&width");
                 return;
             }
             limit = Integer.parseInt(max);
             startBuild();
         } else if (e.getSource() == b3) {
-            System.out.println("新增数据");
+            System.out.println("新增数据/add");
             String h = textField2.getText();
             String w = textField3.getText();
             if (w.isEmpty() || h.isEmpty()) {
-                showDialog("请输入像素值");
+                showDialog("请输入像素值/please input the height or width");
                 return;
             }
             textField2.setText("");
@@ -192,11 +200,11 @@ public class MyFrame extends JFrame implements ActionListener {
     }
 
     private void showDialog(String msg) {
-        JOptionPane.showMessageDialog(null, msg, "提示", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, msg, "Warning", JOptionPane.WARNING_MESSAGE);
     }
 
     private void startBuild() {
-        System.out.println("开始生成");
+        System.out.println("开始生成/start create files");
         WHBean fValue = new WHBean();
         fValue.setWidth(1080);
         fValue.setHeight(1920);
@@ -207,17 +215,17 @@ public class MyFrame extends JFrame implements ActionListener {
             newScale = 2;
         }
         FileUtil.createFile("values", fValue, fValue, limit, newScale);
-        System.out.println("默认生成结束");
+        System.out.println("默认生成结束/default dimen.xml file is finished");
         Map map = valueList;
         Iterator iter = map.entrySet().iterator();
         while (iter.hasNext()) {
-            System.out.println("开始遍历");
+            System.out.println("开始遍历/go through");
             Map.Entry entry = (Map.Entry) iter.next();
             String key = entry.getKey().toString();
             WHBean val = (WHBean) entry.getValue();
             FileUtil.createFile("values-" + key, fValue, val, limit, newScale);
         }
-        System.out.println("生成结束");
+        System.out.println("生成结束/all dimen.xml files are finished");
     }
 
     private void exit() {
